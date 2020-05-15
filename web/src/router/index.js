@@ -3,8 +3,8 @@
  * @Version: 1.0
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:20:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-05-15 09:28:48
+ * @LastEditors: AaronLuo
+ * @LastEditTime: 2020-05-15 18:14:27
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -19,10 +19,26 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/login.vue')
+    component: () => import('../views/login.vue')
+  },
+  {
+    path: '/back',
+    name: 'HomePage',
+    component: () => import('../views/back/homePage.vue'),
+    redirect: '/back/workerManage',
+    children: [{
+      path: 'workerManage',
+      name: 'WorkManage',
+      component: () => import('../views/back/workerManage/workerManage.vue')
+    }, {
+      path: 'personCenter',
+      name: 'PersonCenter',
+      component: () => import('../views/back/personCenter.vue')
+    }, {
+      path: 'hotelManage',
+      name: 'HotelManage',
+      component: () => import('../views/back/hotelManage/hotelManage.vue')
+    }]
   }
 ]
 

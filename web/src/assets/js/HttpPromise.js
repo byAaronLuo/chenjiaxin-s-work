@@ -3,8 +3,8 @@
  * @Version: 1.0
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:32:19
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-05-15 09:26:54
+ * @LastEditors: AaronLuo
+ * @LastEditTime: 2020-05-15 14:05:54
  */
 import axios from 'axios'
 export default class HttpPromise {
@@ -44,11 +44,22 @@ export default class HttpPromise {
     return this.params.header
   }
 
-  ajaxPromise () {
+  ajaxPostPromise () {
     return axios({
       url: this.uri,
       method: this.methodToServer,
       data: this.options,
+      headers: this.headers
+    }).then(response => {
+      return response.data
+    })
+  }
+
+  ajaxGetPromise () {
+    return axios({
+      url: this.uri,
+      method: this.methodToServer,
+      params: this.options,
       headers: this.headers
     }).then(response => {
       return response.data

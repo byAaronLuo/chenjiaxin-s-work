@@ -4,7 +4,7 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:20:41
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 10:34:02
+ * @LastEditTime: 2020-05-15 13:54:13
 -->
 <template>
   <div id="login">
@@ -12,11 +12,11 @@
       <div class="loginBoxTitle">酒店管理系统登录</div>
       <div class="loginBoxForm">
         <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="60px" label-position="left">
-          <el-form-item label="用户名" prop="username">
-            <el-input type="text" v-model="loginForm.username" placeholder="请输入用户名" :autofocus="true" :clearable="true"></el-input>
+          <el-form-item label="用户名" prop="name">
+            <el-input type="text" v-model="loginForm.name" placeholder="请输入用户名" :autofocus="true" :clearable="true"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="passwd">
-            <el-input type="password" v-model="loginForm.passwd" :clearable="true" @keypress.enter.native="login"></el-input>
+            <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" :clearable="true" @keypress.enter.native="login"></el-input>
           </el-form-item>
         </el-form>
         <div class="loginButtons">
@@ -29,11 +29,11 @@
 <script>
 export default {
   data () {
-    var validateUsername = (rule, value, callback) => {
+    var validatename = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
-        if (this.loginForm.username.length < 5) {
+        if (this.loginForm.name.length < 5) {
           callback(new Error('用户名至少5位'))
         } else {
           callback()
@@ -44,7 +44,7 @@ export default {
       console.log(value)
       if (value === '') {
         callback(new Error('请输入密码'))
-      } else if (value.length < 6) {
+      } else if (value.length < 5) {
         callback(new Error('密码错误'))
       } else {
         callback()
@@ -52,25 +52,42 @@ export default {
     }
     return {
       loginForm: {
-        username: '',
-        passwd: ''
+        name: '',
+        password: ''
       },
       rules: {
-        username: [
-          { validator: validateUsername, trigger: 'blur' }
+        name: [
+          { validator: validatename, trigger: 'blur' }
         ],
-        passwd: [
+        password: [
           { validator: validatePass, trigger: 'blur' }
         ]
       }
     }
   },
   mounted () {
-    console.log(1)
   },
   methods: {
-    login () {
-      console.log(1)
+    async login () {
+      const result = await this.$http({
+        url: 'LOGIN',
+        method: 'post',
+        params: this.loginForm,
+        headers: {}
+      })
+      if (result.code === 200) {
+        this.$message({
+          message: '登录成功',
+          type: 'success'
+        })
+        window.sessionStorage.setItem('key', result.data.id)
+        this.$router.push({ path: '/back' })
+      } else {
+        this.$message({
+          message: '用户名或密码错误',
+          type: 'error'
+        })
+      }
     }
   }
 }
