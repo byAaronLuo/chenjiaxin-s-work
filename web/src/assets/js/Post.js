@@ -1,11 +1,25 @@
-/*
- * @Description:
- * @Version: 1.0
- * @Autor: AaronLuo
- * @Date: 2020-05-14 20:32:43
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-05-14 20:56:19
- */
+import HttpPromise from './HttpPromise'
 import { getRemoteAddress } from './ip'
-console.log(getRemoteAddress())
-export const a = 1
+function searchMap (key) {
+  const map = new Map()
+  map.set('LOGIN', 'login')
+  return map.get(key)
+}
+function urlConstruct (key) {
+  const remoteAddress = getRemoteAddress()
+  const url = searchMap(key)
+  return remoteAddress + url
+}
+export default function askDataToServer ({
+  url,
+  method = 'get',
+  params = {},
+  headers = {}
+}) {
+  const promise = new HttpPromise()
+  promise.uri = urlConstruct(url)
+  promise.options = params
+  promise.methodToServer = method
+  promise.headers = headers
+  return promise.ajaxPromise()
+}
