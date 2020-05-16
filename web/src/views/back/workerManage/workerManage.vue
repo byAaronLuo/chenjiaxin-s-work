@@ -4,11 +4,11 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-15 12:53:51
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 18:03:25
+ * @LastEditTime: 2020-05-16 23:07:30
 -->
 <template>
   <div id="WorkerManage">
-    <div style="margin:0.5rem 0">
+    <div style="margin-bottom:1rem">
       <el-row>
         <el-button type="success" @click="openModal('新增用户')">新增用户</el-button>
         <el-button type="primary" @click="openModal('修改用户')">修改用户</el-button>
@@ -117,10 +117,6 @@ export default {
         method: 'get'
       })
       if (result.code === 200) {
-        this.$message({
-          message: '查询成功',
-          type: 'success'
-        })
         this.tableList = result.data
       }
     },

@@ -4,23 +4,15 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-15 18:13:06
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 19:29:22
--->
-<!--
- * @Description:
- * @Version: 1.0
- * @Autor: AaronLuo
- * @Date: 2020-05-15 12:53:51
- * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 18:03:25
+ * @LastEditTime: 2020-05-16 23:07:13
 -->
 <template>
-  <div id="WorkerManage">
-    <div style="margin:0.5rem 0">
+  <div id="RoomManage">
+    <div style="margin-bottom:1rem">
       <el-row>
         <el-button type="success" @click="openModal('新增房间')">新增房间</el-button>
         <el-button type="primary" @click="openModal('修改房间')">修改房间</el-button>
-        <el-button type="danger" @click="deleteUser">删除房间</el-button>
+        <el-button type="danger" @click="deleteRoom">删除房间</el-button>
       </el-row>
     </div>
     <el-table
@@ -63,38 +55,38 @@
       align="center">
     </el-table-column>
   </el-table>
-  <el-dialog :title="modalTitle" :visible.sync="workerModal" @close="closeModal">
-  <el-form :model="hotelManageForm" label-width="80px" label-position="left" style="width:100%" ref="workerForm">
-    <el-form-item label="房间号" prop="roomId">
-        <el-input type="text" v-model="hotelManageForm.roomId" placeholder="请输入房间号" :autofocus="true" :clearable="true"></el-input>
-      </el-form-item>
-      <el-form-item label="房间类型" prop="roomType">
-        <el-select v-model="hotelManageForm.roomType" placeholder="请选择" style="width:100%">
-            <el-option v-for="item in roomTypes" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="房间状态" prop="stayStatus">
-        <el-select v-model="hotelManageForm.stayStatus" placeholder="请选择" style="width:100%">
-            <el-option v-for="item in stayStatus" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="清洁状态" prop="cleanStatus">
-         <el-select v-model="hotelManageForm.cleanStatus" placeholder="请选择" style="width:100%">
-            <el-option v-for="item in cleanStatus" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="房间价格" prop="roomPrice">
-        <el-input type="text" v-model="hotelManageForm.roomPrice" placeholder="请输入房间价格" :clearable="true" ></el-input>
-      </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="workerModal=false">取 消</el-button>
-    <el-button type="primary" @click="confirm">确 定</el-button>
-  </div>
-</el-dialog>
+  <el-dialog :title="modalTitle" :visible.sync="orderModal" @close="closeModal">
+      <el-form :model="hotelManageForm" label-width="80px" label-position="left" style="width:100%" ref="workerForm">
+        <el-form-item label="房间号" prop="roomId">
+            <el-input type="text" v-model="hotelManageForm.roomId" placeholder="请输入房间号" :autofocus="true" :clearable="true"></el-input>
+          </el-form-item>
+          <el-form-item label="房间类型" prop="roomType">
+            <el-select v-model="hotelManageForm.roomType" placeholder="请选择" style="width:100%">
+                <el-option v-for="item in roomTypes" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="房间状态" prop="stayStatus">
+            <el-select v-model="hotelManageForm.stayStatus" placeholder="请选择" style="width:100%">
+                <el-option v-for="item in stayStatus" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="清洁状态" prop="cleanStatus">
+            <el-select v-model="hotelManageForm.cleanStatus" placeholder="请选择" style="width:100%">
+                <el-option v-for="item in cleanStatus" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="房间价格" prop="roomPrice">
+            <el-input type="text" v-model="hotelManageForm.roomPrice" placeholder="请输入房间价格" :clearable="true" ></el-input>
+          </el-form-item>
+        </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="orderModal=false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -102,8 +94,7 @@ export default {
   data () {
     return {
       tableList: [],
-      copyTable: [],
-      workerModal: false,
+      orderModal: false,
       modalTitle: '',
       hotelManageForm: {
         id: '',
@@ -187,16 +178,11 @@ export default {
       }
     },
     async getTableList () {
-      this.changeList('roomType', 4)
       const result = await this.$http({
         url: 'GETROOMLIST',
         method: 'get'
       })
       if (result.code === 200) {
-        this.$message({
-          message: '查询成功',
-          type: 'success'
-        })
         for (const i of result.data) {
           i.roomType = this.changeList('roomType', i.roomType)
           i.stayStatus = this.changeList('stayStatus', i.stayStatus)
@@ -225,10 +211,10 @@ export default {
           cleanStatus: '',
           roomPrice: ''
         }
-        this.workerModal = true
+        this.orderModal = true
       } else if (this.modalTitle === '修改房间') {
         if (this.row.id) {
-          this.workerModal = true
+          this.orderModal = true
           this.hotelManageForm = JSON.parse(JSON.stringify(this.row))
           this.hotelManageForm.roomType = this.changeList('roomTypeValue', this.hotelManageForm.roomType)
           this.hotelManageForm.stayStatus = this.changeList('stayStatusValue', this.hotelManageForm.stayStatus)
@@ -245,7 +231,7 @@ export default {
     closeModal () {
       this.getTableList()
       this.row = {}
-      this.workerModal = false
+      this.orderModal = false
     },
     async confirm () {
       if (this.modalTitle === '新增房间') {
@@ -281,10 +267,10 @@ export default {
         }
       }
       this.row = {}
-      this.workerModal = false
+      this.orderModal = false
       this.getTableList()
     },
-    deleteUser () {
+    deleteRoom () {
       const self = this
       if (this.row.id) {
         this.$confirm('此操作将永久删除该房间, 是否继续?', '提示', {
@@ -322,7 +308,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    #workerManage{
+    #RoomManage{
         height: 100%;
         .inputSize{
           width: 80%;

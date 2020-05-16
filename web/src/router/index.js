@@ -4,7 +4,7 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:20:41
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 18:14:27
+ * @LastEditTime: 2020-05-15 20:44:50
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -38,6 +38,10 @@ const routes = [
       path: 'hotelManage',
       name: 'HotelManage',
       component: () => import('../views/back/hotelManage/hotelManage.vue')
+    }, {
+      path: 'checkOrder',
+      name: 'CheckOrder',
+      component: () => import('../views/back/checkOrder/checkOrder.vue')
     }]
   }
 ]
