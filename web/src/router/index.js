@@ -4,7 +4,7 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:20:41
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-17 10:43:36
+ * @LastEditTime: 2020-05-17 11:01:11
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -56,11 +56,13 @@ const routes = [
   {
     path: '/forbidden',
     name: 'Forbidden',
+    meta: { title: 'Forbidden' },
     component: () => import('../views/back/forbidden.vue')
   },
   {
     path: '/*',
     name: 'NotFound',
+    meta: { title: 'NotFound' },
     component: () => import('../views/back/notFound.vue')
   }
 ]
@@ -77,6 +79,9 @@ VueRouter.prototype.push = function push (location) {
 router.beforeEach((to, from, next) => {
   const id = window.sessionStorage.getItem('key')
   const role = window.sessionStorage.getItem('roleType')
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
   if (to.name !== 'Login') {
     if (id) {
       if (role > to.meta.role) {
