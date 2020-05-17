@@ -4,13 +4,13 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-15 12:39:30
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 14:35:19
+ * @LastEditTime: 2020-05-17 10:50:48
 -->
 <template>
     <div id="HomePage">
         <el-container class="content">
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-            <el-menu background-color=" rgb(238, 241, 246)" default-active="1">
+            <el-menu background-color=" rgb(238, 241, 246)" :default-active="menuActive">
               <template v-for="(item,index) in menuList">
                 <el-menu-item :key= "index" :index="item.index" @click="jumpRouter(item.url)">{{item.name}}</el-menu-item>
               </template>
@@ -31,7 +31,6 @@
                   </el-dropdown>
             </div>
               </div>
-
             </el-header>
             <el-main>
               <router-view/>
@@ -44,6 +43,7 @@
 export default {
   data () {
     return {
+      menuActive: '2',
       menuList: [{
         index: '1',
         name: '员工管理',
@@ -77,6 +77,9 @@ export default {
   },
   methods: {
     jumpRouter (url) {
+      if (url === '/back/personCenter') {
+        this.menuActive = ''
+      }
       this.$router.push({ path: url })
     },
     async logout () {

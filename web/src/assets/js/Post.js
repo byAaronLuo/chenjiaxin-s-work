@@ -4,7 +4,7 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:32:43
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-16 18:29:14
+ * @LastEditTime: 2020-05-17 09:53:24
  */
 // eslint-disable-next-line no-unused-vars
 import HttpPromise from './HttpPromise'
@@ -34,7 +34,7 @@ function searchMap (key) {
   map.set('COSTCREATE', 'customer/cost/create')
   map.set('COSTUPDATE', 'customer/cost/update')
   map.set('COSTDELETE', 'customer/cost/delete')
-
+  map.set('REVENUEINFOLIST', 'financial/list ')
   return map.get(key)
 }
 // eslint-disable-next-line no-unused-vars

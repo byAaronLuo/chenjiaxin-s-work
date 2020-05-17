@@ -4,7 +4,7 @@
  * @Autor: AaronLuo
  * @Date: 2020-05-14 20:20:41
  * @LastEditors: AaronLuo
- * @LastEditTime: 2020-05-15 13:54:13
+ * @LastEditTime: 2020-05-17 10:21:33
 -->
 <template>
   <div id="login">
@@ -33,8 +33,8 @@ export default {
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
-        if (this.loginForm.name.length < 5) {
-          callback(new Error('用户名至少5位'))
+        if (this.loginForm.name.length < 3) {
+          callback(new Error('用户名至少3位'))
         } else {
           callback()
         }
@@ -44,8 +44,8 @@ export default {
       console.log(value)
       if (value === '') {
         callback(new Error('请输入密码'))
-      } else if (value.length < 5) {
-        callback(new Error('密码错误'))
+      } else if (value.length < 6) {
+        callback(new Error('密码至少6位'))
       } else {
         callback()
       }
@@ -81,6 +81,7 @@ export default {
           type: 'success'
         })
         window.sessionStorage.setItem('key', result.data.id)
+        window.sessionStorage.setItem('roleType', result.data.roleType)
         this.$router.push({ path: '/back' })
       } else {
         this.$message({
